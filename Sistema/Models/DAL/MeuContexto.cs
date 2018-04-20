@@ -1,10 +1,8 @@
 ﻿using Models;
-using System;
-using System.Collections.Generic;
+using Models.DAL.Configurations;
+using Models.DAL.Migrations;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Sistema.Models.DAL
 {
@@ -12,22 +10,30 @@ namespace Sistema.Models.DAL
     {
         public MeuContexto() : base("strConn")
         {
-            Database.SetInitializer( new DropCreateDatabaseIfModelChanges<MeuContexto>());
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MeuContexto>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<MeuContexto, Configuration>());
         }
 
-        public DbSet<Cliente> TblClientes { get; set; }
+        public DbSet<Cliente> Cliente { get; set; }
 
-        public DbSet<Endereco>TblEnderecos { get; set; }
+        public DbSet<Pizza> Pizza { get; set; }
 
-        public DbSet<Pizza> TblPizza { get; set; }
+        public DbSet<Pedido> Pedido { get; set; }
 
-        public DbSet<Pedido> TblPedido {get;set;}
+        public DbSet<Bebida> Bebida { get; set; }
 
-        public DbSet<Bebida> TblBebida { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            AddEntityConfigurations(modelBuilder);
+        }
 
-        public DbSet<ClientesPizzas> TblClientesPizzas { get; set; }
-
-        public DbSet<ClientesBebidas> TblClientesBebidas { get; set; }
-
+        private void AddEntityConfigurations(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new ClienteConfiguration());
+            modelBuilder.Configurations.Add(new EnderecoConfiguration());
+            modelBuilder.Configurations.Add(new PizzaConfiguration());
+            modelBuilder.Configurations.Add(new PedidoConfiguration());
+        }
     }
 }

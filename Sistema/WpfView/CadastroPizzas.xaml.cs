@@ -2,18 +2,8 @@
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfView
 {
@@ -30,7 +20,7 @@ namespace WpfView
         private void btnListarPizzas_Click(object sender, RoutedEventArgs e)
         {
             List<Pizza> list = PizzaController.ListarTodasPizzas();
-            if (list!= null)
+            if (list != null)
             {
                 gridPizza.ItemsSource = list;
             }
@@ -67,7 +57,7 @@ namespace WpfView
                     {
                         Pizza pizza = ((Pizza)gridPizza.SelectedItem);
                         EditarProdutos edit = new EditarProdutos();
-                        edit.ProdutoEditarPizza(pizza,1);
+                        edit.ProdutoEditarPizza(pizza, 1);
                         this.Close();
                         edit.ShowDialog();
                     }
@@ -78,7 +68,6 @@ namespace WpfView
                 }
             }
         }
-        
 
         private void btnVoltar_Click(object sender, RoutedEventArgs e)
         {

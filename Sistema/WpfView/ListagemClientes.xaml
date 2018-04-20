@@ -14,11 +14,11 @@
                     <DataGridTextColumn Header="Nome" Binding="{Binding Path=Nome}"/>
                     <DataGridTextColumn Header="CPF" Binding="{Binding Path=Cpf}"/>
                     <DataGridTextColumn Header="Telefone" Binding="{Binding Path=Telefone}"/>
-                    <DataGridTextColumn Header="Rua" Binding="{Binding Path=_Endereco.Rua}"/>
-                    <DataGridTextColumn Header="Número" Binding="{Binding Path=_Endereco.Numero}"/>
-                    <DataGridTextColumn Header="Bairro" Binding="{Binding Path=_Endereco.Bairro}"/>
-                    <DataGridTextColumn Header="Complemento" Binding="{Binding Path=_Endereco.Complemento}"/>
-                    <DataGridTextColumn Header="Referência" Binding="{Binding Path=_Endereco.Referencia}"/>
+                    <DataGridTextColumn Header="Rua" Binding="{Binding Path=Endereco.Rua}"/>
+                    <DataGridTextColumn Header="Número" Binding="{Binding Path=Endereco.Numero}"/>
+                    <DataGridTextColumn Header="Bairro" Binding="{Binding Path=Endereco.Bairro}"/>
+                    <DataGridTextColumn Header="Complemento" Binding="{Binding Path=Endereco.Complemento}"/>
+                    <DataGridTextColumn Header="Referência" Binding="{Binding Path=Endereco.Referencia}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button x:Name="btnVoltar" Content="Voltar" Canvas.Left="300" Canvas.Top="359" Width="102" Height="31" FontFamily="Arial" FontSize="20" Click="btnVoltar_Click"/>

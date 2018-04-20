@@ -8,8 +8,8 @@
         Title="Bebidas" Style="{StaticResource estiloJanela}" >
     <Grid>
         <Label Content="Cadastro de Bebidas" HorizontalAlignment="Left" Margin="216,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.418,0.13" Width="402" FontFamily="Arial Black" FontSize="24"/>
-        <Button x:Name="btnSalvarBebida" Content="Salvar" HorizontalAlignment="Left" Margin="375,110,0,0" VerticalAlignment="Top" Width="75" FontFamily="Arial Black" FontSize="18" Click="btnSalvarBebida_Click" />
-        <Button x:Name="btnListarBebidas" Content="Mostrar Bebidas Cadastradas" HorizontalAlignment="Left" Margin="43,106,0,0" VerticalAlignment="Top" Width="244" Height="26" FontFamily="Arial Black" FontSize="14" Click="btnListarBebidas_Click" />
+        <Button x:Name="BtnSalvarBebida" Content="Salvar" HorizontalAlignment="Left" Margin="375,110,0,0" VerticalAlignment="Top" Width="75" FontFamily="Arial Black" FontSize="18" Click="BtnSalvarBebida_Click" />
+        <Button x:Name="BtnListarBebidas" Content="Mostrar Bebidas Cadastradas" HorizontalAlignment="Left" Margin="43,106,0,0" VerticalAlignment="Top" Width="244" Height="26" FontFamily="Arial Black" FontSize="14" Click="BtnListarBebidas_Click" />
         <DataGrid x:Name="GridMostrarBebida" HorizontalAlignment="Left" Height="209" Margin="43,166,0,0" VerticalAlignment="Top" Width="596" SelectionChanged="GridMostrarBebida_SelectionChanged" />
         <Canvas HorizontalAlignment="Left" Height="60" Margin="22,41,0,0" VerticalAlignment="Top" Width="638">
             <Label Content="Nome" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="17" RenderTransformOrigin="0.509,0.887" Canvas.Left="76"/>

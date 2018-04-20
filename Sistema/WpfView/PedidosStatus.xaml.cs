@@ -2,17 +2,8 @@
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfView
 {
@@ -30,15 +21,15 @@ namespace WpfView
 
         private void gridPedidos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (gridPedidos.SelectedItem != null && referencia==0)
+            if (gridPedidos.SelectedItem != null && referencia == 0)
             {
-                MessageBoxResult result = MessageBox.Show("Deseja alterar para Saiu Para Entrega o status do pedido " + ((Pedido)gridPedidos.SelectedItem).NumPedido + " ?", "Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show("Deseja alterar para Saiu Para Entrega o status do pedido " + ((Pedido)gridPedidos.SelectedItem).PedidoID + " ?", "Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
                         Pedido pedido = ((Pedido)gridPedidos.SelectedItem);
-                        PedidoController.MudarStatus(pedido,"SAIU PARA ENTREGA");
+                        PedidoController.MudarStatus(pedido, "SAIU PARA ENTREGA");
                         gridPedidos.ItemsSource = PedidoController.ProcuraPedidoPendentes();
                         MessageBox.Show("Pedido mudado para Saiu Para Entrega com sucesso");
                     }
@@ -47,15 +38,16 @@ namespace WpfView
                         MessageBox.Show("ERRO: " + erro);
                     }
                 }
-             }else if(gridPedidos.SelectedItem != null && referencia == 1)
-             {
-                MessageBoxResult result = MessageBox.Show("Deseja alterar para Finalizado o status do pedido " + ((Pedido)gridPedidos.SelectedItem).NumPedido + " ?", "Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            }
+            else if (gridPedidos.SelectedItem != null && referencia == 1)
+            {
+                MessageBoxResult result = MessageBox.Show("Deseja alterar para Finalizado o status do pedido " + ((Pedido)gridPedidos.SelectedItem).PedidoID + " ?", "Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
                         Pedido ped = ((Pedido)gridPedidos.SelectedItem);
-                        PedidoController.MudarStatus(ped,"FINALIZADO");
+                        PedidoController.MudarStatus(ped, "FINALIZADO");
                         gridPedidos.ItemsSource = PedidoController.ProcuraPedidoSaiuParaEntrega();
                         MessageBox.Show("Pedido mudado para finalizado com sucesso");
                     }
@@ -77,10 +69,10 @@ namespace WpfView
         private void btnSaiuEntrega_Click(object sender, RoutedEventArgs e)
         {
             referencia = 1;
-            List<Pedido> ped=PedidoController.ProcuraPedidoSaiuParaEntrega();
-            if (ped!=null)
+            List<Pedido> pedidos = PedidoController.ProcuraPedidoSaiuParaEntrega();
+            if (pedidos.Count > 0)
             {
-                gridPedidos.ItemsSource = ped;
+                gridPedidos.ItemsSource = pedidos;
             }
             else
             {
@@ -91,8 +83,8 @@ namespace WpfView
         private void btnAndamento_Click(object sender, RoutedEventArgs e)
         {
             referencia = 0;
-            List<Pedido> ped = PedidoController.ProcuraPedidoPendentes();
-            if (ped != null)
+            var ped = PedidoController.ProcuraPedidoPendentes();
+            if (ped.Count > 0)
             {
                 gridPedidos.ItemsSource = ped;
             }
@@ -105,10 +97,10 @@ namespace WpfView
         private void btnFinalizado_Click(object sender, RoutedEventArgs e)
         {
             referencia = 2;
-            List<Pedido> ped = PedidoController.ProcuraPedidoFinalizado();
-            if (ped != null)
+            var pedidos = PedidoController.ProcuraPedidoFinalizado();
+            if (pedidos.Count > 0)
             {
-                gridPedidos.ItemsSource = ped;
+                gridPedidos.ItemsSource = pedidos;
             }
             else
             {

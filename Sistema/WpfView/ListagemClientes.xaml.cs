@@ -2,17 +2,8 @@
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfView
 {
@@ -45,7 +36,7 @@ namespace WpfView
                     {
                         Cliente cli = ((Cliente)GridMostrar.SelectedItem);
                         EditarCliente edit = new EditarCliente();
-                        edit.EditarNome(cli);
+                        edit.Editar(cli);
                         this.Close();
                         edit.ShowDialog();
                     }
@@ -64,16 +55,13 @@ namespace WpfView
             }
         }
 
-            private void MostrarClientes()
+        private void MostrarClientes()
+        {
+            List<Cliente> dt = ClienteController.ListarTodosClientes();
+            if (dt != null)
             {
-                List<Cliente> dt = ClienteController.ListarTodosClientes();
-                if (dt != null)
-                {
-                    GridMostrar.ItemsSource = dt;
-                }
-
+                GridMostrar.ItemsSource = dt;
             }
-
         }
     }
 }

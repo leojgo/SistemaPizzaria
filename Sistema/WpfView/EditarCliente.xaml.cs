@@ -1,19 +1,8 @@
 ﻿using Controllers;
 using Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfView
 {
@@ -26,12 +15,11 @@ namespace WpfView
 
         public EditarCliente()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         private void btnEditar_Click(object sender, RoutedEventArgs e)
         {
-            EditarEndereco(txtRua.Text, int.Parse(txtNumero.Text), txtBairro.Text, txtComplemento.Text, txtReferencia.Text,cliEdicao.EnderecoID);
             EnviarClienteEditado(txtNome.Text, txtCPF.Text, txtTelefone.Text);
             MessageBox.Show("Cliente editado");
             FazerPedido pedido = new FazerPedido();
@@ -47,41 +35,28 @@ namespace WpfView
             m.ShowDialog();
         }
 
-        public void EditarNome(Cliente cli)
+        public void Editar(Cliente cliente)
         {
-            txtNome.Text = cli.Nome;
-            txtCPF.Text = cli.Cpf;
-            txtTelefone.Text = cli.Telefone;
-            txtRua.Text = cli._Endereco.Rua;
-            txtNumero.Text = Convert.ToString(cli._Endereco.Numero);
-            txtBairro.Text = cli._Endereco.Bairro;
-            txtComplemento.Text = cli._Endereco.Complemento;
-            txtReferencia.Text = cli._Endereco.Referencia;
-            cliEdicao = cli;
+            txtNome.Text = cliente.Nome;
+            txtCPF.Text = cliente.Cpf;
+            txtTelefone.Text = cliente.Telefone;
+            txtRua.Text = cliente.Endereco.Rua;
+            txtNumero.Text = Convert.ToString(cliente.Endereco.Numero);
+            txtBairro.Text = cliente.Endereco.Bairro;
+            txtComplemento.Text = cliente.Endereco.Complemento;
+            txtReferencia.Text = cliente.Endereco.Referencia;
+            cliEdicao = cliente;
+            ClienteController.EditarCliente(cliente.ClienteID, cliente);
         }
 
         private void EnviarClienteEditado(string Nome, string CPF, string Telefone)
         {
-            Cliente cli = new Cliente();
-            cli.Nome = Nome;
-            cli.Cpf = CPF;
-            cli.Telefone = Telefone;
+            Cliente cliente = new Cliente();
+            cliente.Nome = Nome;
+            cliente.Cpf = CPF;
+            cliente.Telefone = Telefone;
 
-            ClienteController.EditarCliente(cliEdicao.ClienteID,cli);            
-        }
-
-        private Endereco EditarEndereco(string Rua, int Num, string Bairro, string Compl, string Refe,int id)
-        {
-            Endereco end = new Endereco();
-            end.Rua = Rua;
-            end.Numero = Num;
-            end.Bairro = Bairro;
-            end.Complemento = Compl;
-            end.Referencia = Refe;
-
-            EnderecoController.EditarEndereco(id,end);
-
-            return end;
+            ClienteController.EditarCliente(cliEdicao.ClienteID, cliente);
         }
 
         private bool VerificarItens()
@@ -116,6 +91,5 @@ namespace WpfView
                 return true;
             }
         }
-
     }
 }

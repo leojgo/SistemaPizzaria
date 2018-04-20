@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Controllers
 {
     public class ClientesBebidasController
-    {
+    {/*
         public static void SalvarItem(ClientesBebidas novo)
         {
             ContextoSingleton.Instancia.TblClientesBebidas.Add(novo);
@@ -51,6 +51,6 @@ namespace Controllers
                System.Data.Entity.EntityState.Deleted;
                 ContextoSingleton.Instancia.SaveChanges();
             }
-        }
+        }*/
     }
 }

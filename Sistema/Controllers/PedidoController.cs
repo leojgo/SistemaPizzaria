@@ -1,9 +1,7 @@
 ﻿using Models;
-using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Controllers
 {
@@ -12,7 +10,7 @@ namespace Controllers
         // INSERT
         public static void SalvarPedido(Pedido novo)
         {
-            ContextoSingleton.Instancia.TblPedido.Add(novo);
+            ContextoSingleton.Instancia.Pedido.Add(novo);
             ContextoSingleton.Instancia.SaveChanges();
         }
 
@@ -20,90 +18,44 @@ namespace Controllers
         {
             Pedido pedidoEdit = PesquisarPorID(pedidoAntigo.PedidoID);
 
-           if (pedidoEdit != null)
+            if (pedidoEdit != null)
             {
-              pedidoEdit.Status = status;
-           }
+                pedidoEdit.Status = status;
+            }
 
-           ContextoSingleton.Instancia.Entry(pedidoEdit).State =
-            System.Data.Entity.EntityState.Modified;
+            ContextoSingleton.Instancia.Entry(pedidoEdit).State = EntityState.Modified;
             ContextoSingleton.Instancia.SaveChanges();
         }
 
         public static List<Pedido> ListarTodosPedidos()
         {
-
-            return ContextoSingleton.Instancia.TblPedido.Include("_ClientesPizzas").Include("_ClientesBebidas").ToList();
-        }
-
-        public static bool PesquisaNumPedido(int num)
-        {
-            var c = (from x in ContextoSingleton.Instancia.TblPedido
-                     where x.NumPedido.Equals(num)
-                     select x).ToList();
-
-            if (c.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return ContextoSingleton.Instancia.Pedido.ToList();
         }
 
         public static List<Pedido> ProcuraPedidoSaiuParaEntrega()
         {
-            var c = (from x in ContextoSingleton.Instancia.TblPedido.Include("_ClientesPizzas").Include("_ClientesBebidas")
-                     where x.Status.Contains("SAIU PARA ENTREGA")
-                     select x).ToList();
-
-            if (c.Count > 0)
-            {
-                return c;
-            }
-            else
-            {
-                return null;
-            }
+            return (from x in ContextoSingleton.Instancia.Pedido
+                    where x.Status.Contains("SAIU PARA ENTREGA")
+                    select x).ToList();
         }
 
         public static List<Pedido> ProcuraPedidoPendentes()
         {
-            var c = (from x in ContextoSingleton.Instancia.TblPedido.Include("_ClientesPizzas").Include("_ClientesBebidas")
-                     where x.Status.Contains("EM PRODUÇÃO")
-                     select x).ToList();
-
-            if (c.Count > 0)
-            {
-                return c;
-            }
-            else
-            {
-                return null;
-            }
+            return (from x in ContextoSingleton.Instancia.Pedido
+                    where x.Status.Contains("EM PRODUÇÃO")
+                    select x).ToList();
         }
 
         public static List<Pedido> ProcuraPedidoFinalizado()
         {
-            var c = (from x in ContextoSingleton.Instancia.TblPedido.Include("_ClientesPizzas").Include("_ClientesBebidas")
-                     where x.Status.Contains("FINALIZADO")
-                     select x).ToList();
-
-            if (c.Count > 0)
-            {
-                return c;
-            }
-            else
-            {
-                return null;
-            }
-
-        }  
+            return (from x in ContextoSingleton.Instancia.Pedido
+                    where x.Status.Contains("FINALIZADO")
+                    select x).ToList();
+        }
 
         public static Pedido PesquisarPorID(int IDPedido)
         {
-            return ContextoSingleton.Instancia.TblPedido.Find(IDPedido);
+            return ContextoSingleton.Instancia.Pedido.Find(IDPedido);
         }
     }
 }

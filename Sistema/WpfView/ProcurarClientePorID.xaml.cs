@@ -2,20 +2,8 @@
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfView
 {
@@ -27,16 +15,15 @@ namespace WpfView
         public ProcurarClientePorID()
         {
             InitializeComponent();
-            
         }
 
         private void btnClientes_Click(object sender, RoutedEventArgs e)
         {
-             List<Cliente> dt = ClienteController.ListarTodosClientes();
-            if (dt!=null)
+            List<Cliente> dt = ClienteController.ListarTodosClientes();
+            if (dt != null)
             {
                 //GridMostrar.ItemsSource = dt;
-            }                        
+            }
         }
 
         private void btnVoltar_Click(object sender, RoutedEventArgs e)
@@ -44,7 +31,7 @@ namespace WpfView
             MainWindow m = new MainWindow();
             this.Close();
             m.ShowDialog();
-        }        
+        }
 
         private void btnProcurar_Click(object sender, RoutedEventArgs e)
         {
@@ -53,20 +40,20 @@ namespace WpfView
 
             if ((Regex.IsMatch(caracter, verifica) || (txtID.Text != null)))
             {
-                Cliente cli = ClienteController.PesquisarPorID(int.Parse(txtID.Text));
+                Cliente cliente = ClienteController.PesquisarPorID(int.Parse(txtID.Text));
 
-                if (cli != null)
+                if (cliente != null)
                 {
                     MessageBox.Show("Ola");
-                    blockID.Text = Convert.ToString(cli.ClienteID);
-                    txtNome.Text = cli.Nome;
-                    txtCPF.Text = cli.Cpf;
-                    txtTelefone.Text = cli.Telefone;
-                    txtRua.Text = cli._Endereco.Rua;
-                    txtNumero.Text = Convert.ToString(cli._Endereco.Numero);
-                    txtBairro.Text = cli._Endereco.Bairro;
-                    txtComplemento.Text = cli._Endereco.Complemento;
-                    txtReferencia.Text = cli._Endereco.Referencia;
+                    blockID.Text = Convert.ToString(cliente.ClienteID);
+                    txtNome.Text = cliente.Nome;
+                    txtCPF.Text = cliente.Cpf;
+                    txtTelefone.Text = cliente.Telefone;
+                    txtRua.Text = cliente.Endereco.Rua;
+                    txtNumero.Text = Convert.ToString(cliente.Endereco.Numero);
+                    txtBairro.Text = cliente.Endereco.Bairro;
+                    txtComplemento.Text = cliente.Endereco.Complemento;
+                    txtReferencia.Text = cliente.Endereco.Referencia;
                 }
                 else
                 {
@@ -77,7 +64,6 @@ namespace WpfView
             {
                 MessageBox.Show("Campo inválido, digite apenas números.");
             }
-
         }
 
         /* private void GridMostrar_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -88,7 +74,7 @@ namespace WpfView
                  if (result == MessageBoxResult.Yes)
                  {
                      try
-                     {      
+                     {
                          Cliente cli = ((Cliente)GridMostrar.SelectedItem);
                          EditarCliente edit = new EditarCliente();
                          edit.EditarNome(cli);
@@ -102,14 +88,12 @@ namespace WpfView
                  }
                  else
                  {
-                     FazerPedido pedido = new FazerPedido();                    
+                     FazerPedido pedido = new FazerPedido();
                      pedido.MostrarCliente(((Cliente)GridMostrar.SelectedItem).ClienteID);
                      this.Close();
                      pedido.ShowDialog();
                  }
              }
          }*/
-
     }
 }
-

@@ -2,19 +2,9 @@
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfView
 {
@@ -44,20 +34,19 @@ namespace WpfView
 
         private void btnProcura_Click(object sender, RoutedEventArgs e)
         {
-
             string caracter = txtTelefone.Text.Substring(0, 1);
-            string verifica = "^[0-9]";                   
+            string verifica = "^[0-9]";
 
-            if ((txtTelefone.Text.Length != 0) && (Regex.IsMatch(caracter,verifica)))
+            if ((txtTelefone.Text.Length != 0) && (Regex.IsMatch(caracter, verifica)))
             {
-                List<Cliente> cli = ClienteController.PesquisarPorTelefone(txtTelefone.Text);
-                if (cli != null)
+                List<Cliente> clientes = ClienteController.PesquisarPorTelefone(txtTelefone.Text);
+                if (clientes.Count > 0)
                 {
-                    gridCliente.ItemsSource = cli;
+                    gridCliente.ItemsSource = clientes;
                 }
                 else
                 {
-                   if (MessageBox.Show("Cliente não encontrado, deseja cadastrar novo cliente ?","Cliente não encontrado",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    if (MessageBox.Show("Cliente não encontrado, deseja cadastrar novo cliente ?", "Cliente não encontrado", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
                         CadastrarCliente cad = new CadastrarCliente();
                         this.Close();
@@ -79,7 +68,7 @@ namespace WpfView
                 CadastrarCliente ccli = new CadastrarCliente();
                 this.Close();
                 ccli.ShowDialog();
-            }            
+            }
         }
 
         private void gridCliente_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -93,7 +82,7 @@ namespace WpfView
                     {
                         Cliente cli = ((Cliente)gridCliente.SelectedItem);
                         EditarCliente edit = new EditarCliente();
-                        edit.EditarNome(cli);
+                        edit.Editar(cli);
                         this.Close();
                         edit.ShowDialog();
                     }
@@ -104,13 +93,12 @@ namespace WpfView
                 }
                 else
                 {
-                    FazerPedido pedido = new FazerPedido();                    
+                    FazerPedido pedido = new FazerPedido();
                     pedido.MostrarCliente(((Cliente)gridCliente.SelectedItem).ClienteID);
                     this.Close();
                     pedido.ShowDialog();
                 }
             }
-
         }
     }
 }

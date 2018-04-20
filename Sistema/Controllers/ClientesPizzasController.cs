@@ -9,7 +9,7 @@ namespace Controllers
 {
    public class ClientesPizzasController
     {
-        public static void SalvarItem(ClientesPizzas novo)
+        /*public static void SalvarItem(ClientesPizzas novo)
         {
             ContextoSingleton.Instancia.TblClientesPizzas.Add(novo);
             ContextoSingleton.Instancia.SaveChanges();
@@ -51,7 +51,7 @@ namespace Controllers
                System.Data.Entity.EntityState.Deleted;
                 ContextoSingleton.Instancia.SaveChanges();
             }            
-        }
+        }*/
         
     }
 }

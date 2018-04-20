@@ -1,19 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace WpfView
 {
@@ -28,10 +13,10 @@ namespace WpfView
         }
 
         private void btnRealizarPedido_Click(object sender, RoutedEventArgs e)
-        {         
-                ProcurarCliente  cl = new ProcurarCliente();
-                this.Close();
-                cl.ShowDialog();          
+        {
+            ProcurarCliente cl = new ProcurarCliente();
+            this.Close();
+            cl.ShowDialog();
         }
 
         private void btnCadastrar_Click(object sender, RoutedEventArgs e)
@@ -74,6 +59,20 @@ namespace WpfView
             ListaPedidos tela = new ListaPedidos();
             this.Close();
             tela.ShowDialog();
+        }
+
+        private void ListagemCliente_Click(object sender, RoutedEventArgs e)
+        {
+            var tela = new ListagemClientes();
+            Close();
+            tela.Show();
+        }
+
+        private void BuscaCLiente_Click(object sender, RoutedEventArgs e)
+        {
+            var buscaCliente = new ProcurarCliente();
+            Close();
+            buscaCliente.Show();
         }
     }
 }
