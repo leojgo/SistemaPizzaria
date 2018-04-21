@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Controllers
 {
@@ -14,9 +15,9 @@ namespace Controllers
             ContextoSingleton.Instancia.SaveChanges();
         }
 
-        public static List<Cliente> ListarTodosClientes()
+        public async static Task<List<Cliente>> ListarTodosClientes()
         {
-            return ContextoSingleton.Instancia.Cliente.ToList(); //IQueryable
+            return await ContextoSingleton.Instancia.Cliente.ToListAsync(); //IQueryable
         }
 
         public static void EditarCliente(int id, Cliente novoCliente)

@@ -1,7 +1,6 @@
 ﻿using Controllers;
 using Models;
 using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -15,15 +14,6 @@ namespace WpfView
         public ProcurarClientePorID()
         {
             InitializeComponent();
-        }
-
-        private void btnClientes_Click(object sender, RoutedEventArgs e)
-        {
-            List<Cliente> dt = ClienteController.ListarTodosClientes();
-            if (dt != null)
-            {
-                //GridMostrar.ItemsSource = dt;
-            }
         }
 
         private void btnVoltar_Click(object sender, RoutedEventArgs e)
@@ -44,7 +34,6 @@ namespace WpfView
 
                 if (cliente != null)
                 {
-                    MessageBox.Show("Ola");
                     blockID.Text = Convert.ToString(cliente.ClienteID);
                     txtNome.Text = cliente.Nome;
                     txtCPF.Text = cliente.Cpf;

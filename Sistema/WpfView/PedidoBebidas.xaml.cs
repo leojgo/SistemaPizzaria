@@ -1,18 +1,9 @@
 ﻿using Controllers;
 using Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfView
 {
@@ -23,7 +14,7 @@ namespace WpfView
     {
         private double valorTotal = 0;
         private Cliente clientePedido = null;
-        private int numPedido;
+
         //private List<ClientesPizzas> list = null;
 
         public PedidoBebidas()
@@ -39,19 +30,18 @@ namespace WpfView
             w.ShowDialog();
         }
 
-        public void MostrarClienteParteBebidas(Cliente cli, double total, int num)
+        public void MostrarClienteParteBebidas(Cliente cliente, double total)
         {
-            blockCliente.Text = cli.Nome;
-            blockTelefone.Text = cli.Telefone;
-            clientePedido = cli;
+            blockCliente.Text = cliente.Nome;
+            blockTelefone.Text = cliente.Telefone;
+            clientePedido = cliente;
             blockValorTotal.Text = Convert.ToString(total);
             valorTotal = total;
-            numPedido = num;
         }
 
         private async void MostrarGrid()
         {
-            var  list = await BebidasController.ListarTodasBebidas();
+            var list = await BebidasController.ListarTodasBebidas();
 
             if (list != null)
             {
@@ -111,17 +101,17 @@ namespace WpfView
 
         private void SalvandoNaTabelaPedidos()
         {
-           /* SalvarPizzasTabelaPedidos();
-            List<ClientesBebidas> listaBebidas = ClientesBebidasController.PesquisarClientePedidos(clientePedido.ClienteID);
-            Pedido novoPed = new Pedido();
+            /* SalvarPizzasTabelaPedidos();
+             List<ClientesBebidas> listaBebidas = ClientesBebidasController.PesquisarClientePedidos(clientePedido.ClienteID);
+             Pedido novoPed = new Pedido();
 
-            foreach (var item in listaBebidas)
-            {
-                novoPed.Status = "EM PRODUÇÃO";
-                novoPed.Bebida = item.ClientesBebidasID;               
-                novoPed.ValorTotal = double.Parse(blockValorTotal.Text);
-                PedidoController.SalvarPedido(novoPed);
-            }*/
+             foreach (var item in listaBebidas)
+             {
+                 novoPed.Status = "EM PRODUÇÃO";
+                 novoPed.Bebida = item.ClientesBebidasID;
+                 novoPed.ValorTotal = double.Parse(blockValorTotal.Text);
+                 PedidoController.SalvarPedido(novoPed);
+             }*/
         }
 
         private void SalvarPizzasTabelaPedidos()
@@ -165,12 +155,19 @@ namespace WpfView
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-                MainWindow tela = new MainWindow();
-                if (MessageBox.Show("Deseja cancelar pedido ?", "Cancelar pedido", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    //ClientesPizzasController.ExcluirPedidosCliente(clientePedido.ClienteID);
-                }
+            MainWindow tela = new MainWindow();
+            if (MessageBox.Show("Deseja cancelar pedido ?", "Cancelar pedido", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                //ClientesPizzasController.ExcluirPedidosCliente(clientePedido.ClienteID);
+            }
         }
 
+        private void gridBebida_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+        }
+
+        private void gridBebidasEscolhidas_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+        }
     }
 }

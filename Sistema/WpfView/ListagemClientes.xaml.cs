@@ -1,7 +1,6 @@
 ﻿using Controllers;
 using Models;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -48,20 +47,16 @@ namespace WpfView
                 else
                 {
                     FazerPedido pedido = new FazerPedido();
-                    pedido.MostrarCliente(((Cliente)GridMostrar.SelectedItem).ClienteID);
+                    pedido.MostrarCliente((Cliente)GridMostrar.SelectedItem);
                     this.Close();
                     pedido.ShowDialog();
                 }
             }
         }
 
-        private void MostrarClientes()
+        private async void MostrarClientes()
         {
-            List<Cliente> dt = ClienteController.ListarTodosClientes();
-            if (dt != null)
-            {
-                GridMostrar.ItemsSource = dt;
-            }
+            GridMostrar.ItemsSource = await ClienteController.ListarTodosClientes();
         }
     }
 }

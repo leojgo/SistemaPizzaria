@@ -1,10 +1,10 @@
 ﻿using Controllers;
 using Models;
-using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace WpfView
 {
@@ -13,9 +13,12 @@ namespace WpfView
     /// </summary>
     public partial class ProcurarCliente : Window
     {
+        private ObservableCollection<Cliente> _clientes;
+
         public ProcurarCliente()
         {
             InitializeComponent();
+            CarregarGrid();
         }
 
         private void ProcuraID(object sender, RoutedEventArgs e)
@@ -23,6 +26,12 @@ namespace WpfView
             ProcurarClientePorID pID = new ProcurarClientePorID();
             this.Close();
             pID.ShowDialog();
+        }
+
+        private async Task CarregarGrid()
+        {
+            var clientList = await ClienteController.ListarTodosClientes();
+            gridCliente.ItemsSource = new ObservableCollection<Cliente>(clientList);
         }
 
         private void btnVoltar_Click(object sender, RoutedEventArgs e)
@@ -62,7 +71,7 @@ namespace WpfView
 
         private void MensagemErro()
         {
-            MessageBoxResult result = System.Windows.MessageBox.Show("Telefone não cadastrado ! Deseja cadastrar cliente ?", "Cliente não encontrado", MessageBoxButton.YesNo, MessageBoxImage.Error);
+            MessageBoxResult result = MessageBox.Show("Telefone não cadastrado ! Deseja cadastrar cliente ?", "Cliente não encontrado", MessageBoxButton.YesNo, MessageBoxImage.Error);
             if (result == MessageBoxResult.Yes)
             {
                 CadastrarCliente ccli = new CadastrarCliente();
@@ -71,34 +80,12 @@ namespace WpfView
             }
         }
 
-        private void gridCliente_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void gridCliente_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (gridCliente.SelectedItem != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Deseja editar o cliente de nome: " + ((Cliente)gridCliente.SelectedItem).Nome + " ?", "Editar", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        Cliente cli = ((Cliente)gridCliente.SelectedItem);
-                        EditarCliente edit = new EditarCliente();
-                        edit.Editar(cli);
-                        this.Close();
-                        edit.ShowDialog();
-                    }
-                    catch (Exception erro)
-                    {
-                        MessageBox.Show("ERRO: " + erro);
-                    }
-                }
-                else
-                {
-                    FazerPedido pedido = new FazerPedido();
-                    pedido.MostrarCliente(((Cliente)gridCliente.SelectedItem).ClienteID);
-                    this.Close();
-                    pedido.ShowDialog();
-                }
-            }
+            FazerPedido pedido = new FazerPedido();
+            pedido.MostrarCliente((Cliente)gridCliente.SelectedItem);
+            this.Close();
+            pedido.ShowDialog();
         }
     }
 }

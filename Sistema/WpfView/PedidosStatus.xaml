@@ -10,10 +10,10 @@
         <Label Content="Controle de Status dos Pedidos" HorizontalAlignment="Left" Margin="169,19,0,0" VerticalAlignment="Top" Width="386" FontFamily="Arial" FontSize="24"/>
         <DataGrid x:Name="gridPedidos"  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="false" Margin="78,135,61,38" SelectionChanged="gridPedidos_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Número do Pedido" Binding="{Binding Path=NumPedido}"/>
-                <DataGridTextColumn Header="Produtos escolhidos" Binding="{Binding Path=_ClientesPizzas._Pizza.Nome}"/>
+                <DataGridTextColumn Header="Número do Pedido" Binding="{Binding Path=PedidoID}"/>
+                <DataGridTextColumn Header="Produtos escolhidos" Binding="{Binding Path=Pizza.Nome}"/>
                 <DataGridTextColumn Header="Status" Binding="{Binding Path=Status}"/>
-                <DataGridTextColumn Header="Tamanho da Pizza" Binding="{Binding Path=Tamanho_Pizza}"/>
+                <!--<DataGridTextColumn Header="Tamanho da Pizza" Binding="{Binding Path=}"/>-->
                 <DataGridTextColumn Header="Valor Total" Binding="{Binding Path=ValorTotal}"/>
             </DataGrid.Columns>
         </DataGrid>

@@ -22,6 +22,7 @@ namespace WpfView
                 Cliente clinovo = SalvarCliente(txtNome.Text, txtCPF.Text.Trim(), txtTelefone.Text.Trim(), txtRua.Text, int.Parse(txtNumero.Text.Trim()), txtBairro.Text, txtComplemento.Text, txtReferencia.Text);
                 ClienteController.SalvarCliente(clinovo);
                 MessageBox.Show("Cliente salvo com sucesso");
+                LimparCampos();
             }
         }
 
@@ -48,6 +49,18 @@ namespace WpfView
                     Referencia = Refe
                 }
             };
+        }
+
+        private void LimparCampos()
+        {
+            txtNome.Text = "";
+            txtCPF.Text = "";
+            txtTelefone.Text = "";
+            txtRua.Text = "";
+            txtNumero.Text = "";
+            txtBairro.Text = "";
+            txtComplemento.Text = "";
+            txtReferencia.Text = "";
         }
 
         private bool VerificarItens()

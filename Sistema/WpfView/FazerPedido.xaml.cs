@@ -1,7 +1,8 @@
 ﻿using Controllers;
 using Models;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,14 +15,13 @@ namespace WpfView
     {
         private double valorTotal = 0;
         private Cliente clientePedido;
-        private int qtdMaxPizza = 0;
-        private string TamPizza;
-        private bool PossuiPizzasCadastradas = true;
-        private int numPedido = 0;
+        private ObservableCollection<Pizza> _pizzasEscolhidas;
+        private ObservableCollection<Pizza> _pizzas;
 
         public FazerPedido()
         {
             InitializeComponent();
+            _pizzasEscolhidas = new ObservableCollection<Pizza>();
             MostrarGrid();
         }
 
@@ -32,66 +32,36 @@ namespace WpfView
             w.ShowDialog();
         }
 
-        public void MostrarCliente(int id)
+        public void MostrarCliente(Cliente cliente)
         {
-            Cliente cli = ClienteController.PesquisarPorID(id);
-            blockCliente.Text = cli.Nome;
-            blockTelefone.Text = cli.Telefone;
-            clientePedido = cli;
+            blockCliente.Text = cliente.Nome;
+            blockTelefone.Text = cliente.Telefone;
+            clientePedido = cliente;
         }
 
         private void MostrarGrid()
         {
-            List<Pizza> list = PizzaController.ListarTodasPizzas();
-
-            if (list != null)
-            {
-                gridPizza.ItemsSource = list;
-            }
-            else
-            {
-                MessageBox.Show("Não foi cadastrado nenhuma pizza");
-                PossuiPizzasCadastradas = false;
-                CadastroPizzas tela = new CadastroPizzas();
-                this.Close();
-                tela.ShowDialog();
-            }
+            gridPizzasEscolhidas.ItemsSource = _pizzasEscolhidas;
+            _pizzas = new ObservableCollection<Pizza>(PizzaController.ListarTodasPizzas());
+            gridPizza.ItemsSource = _pizzas;
         }
 
-        /*private void GerarNumPedido()
+        private void gridPizza_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            int num;
-            bool retorno;
+            _pizzasEscolhidas.Add(gridPizza.SelectedItem as Pizza);
+            AtualizarTotal();
+        }
 
-            Random random = new Random();
-            num = random.Next(0, 2000);
-            retorno = PedidoController.PesquisaNumPedido(num);
-            if (retorno == true)
-            {
-                GerarNumPedido();
-            }
-
-            numPedido=num;
-        }*/
-
-        private void gridPizza_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void gridPizzasEscolhidas_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (gridPizzasEscolhidas.Items.Count < 2 && qtdMaxPizza == 2)
-            {
-                SalvandoTabelaEscolhidos();
-            }
-            else if (gridPizzasEscolhidas.Items.Count < 3 && qtdMaxPizza == 3)
-            {
-                SalvandoTabelaEscolhidos();
-            }
-            else if (gridPizzasEscolhidas.Items.Count < 4 && qtdMaxPizza == 4)
-            {
-                SalvandoTabelaEscolhidos();
-            }
-            else
-            {
-                MessageBox.Show("Quantidade de pizzas excedidas");
-            }
+            _pizzasEscolhidas.Remove(gridPizzasEscolhidas.SelectedItem as Pizza);
+            AtualizarTotal();
+        }
+
+        private void AtualizarTotal()
+        {
+            valorTotal = _pizzasEscolhidas.Sum(x => x.Preco);
+            blockValorTotal.Text = Convert.ToString(valorTotal);
         }
 
         private void SalvandoTabelaEscolhidos()
@@ -137,22 +107,21 @@ namespace WpfView
             //List<ClientesPizzas>list=ClientesPizzasController.PesquisarClientePedidos(clientePedido.ClienteID);
             Pedido novoPed = new Pedido();
 
-           /* foreach (var item in list)
-            {
-                novoPed.Status = "EM PRODUÇÃO";
-                novoPed.ClientesProdutosEscolhidosID = item.ClientesPizzasID;
-                novoPed.NumPedido = numPedido;
-                novoPed.ValorTotal = double.Parse(blockValorTotal.Text);
-                novoPed.Tamanho_Pizza = TamPizza;
-                PedidoController.SalvarPedido(novoPed);
-            }*/
+            /* foreach (var item in list)
+             {
+                 novoPed.Status = "EM PRODUÇÃO";
+                 novoPed.ClientesProdutosEscolhidosID = item.ClientesPizzasID;
+                 novoPed.NumPedido = numPedido;
+                 novoPed.ValorTotal = double.Parse(blockValorTotal.Text);
+                 novoPed.Tamanho_Pizza = TamPizza;
+                 PedidoController.SalvarPedido(novoPed);
+             }*/
         }
 
         private void Bebidas_Click(object sender, RoutedEventArgs e)
         {
             PedidoBebidas bebidas = new PedidoBebidas();
-            //List<ClientesPizzas> list = ClientesPizzasController.PesquisarClientePedidos(clientePedido.ClienteID);
-            bebidas.MostrarClienteParteBebidas(clientePedido, valorTotal, numPedido);
+            bebidas.MostrarClienteParteBebidas(clientePedido, valorTotal);
             this.Close();
             bebidas.ShowDialog();
         }
@@ -182,88 +151,13 @@ namespace WpfView
             }
         }
 
-        private void CheckBoxBroto_Checked(object sender, RoutedEventArgs e)
-        {
-            qtdMaxPizza = 2;
-            checkMedia.IsEnabled = false;
-            checkGigante.IsEnabled = false;
-            checkGrande.IsEnabled = false;
-            TamPizza = "Broto";
-        }
-
-        private void checkMedia_Checked(object sender, RoutedEventArgs e)
-        {
-            qtdMaxPizza = 3;
-            checkBroto.IsEnabled = false;
-            checkGigante.IsEnabled = false;
-            checkGrande.IsEnabled = false;
-            TamPizza = "Média";
-        }
-
-        private void checkGrande_Checked(object sender, RoutedEventArgs e)
-        {
-            qtdMaxPizza = 3;
-            checkBroto.IsEnabled = false;
-            checkMedia.IsEnabled = false;
-            checkGigante.IsEnabled = false;
-            TamPizza = "Média";
-        }
-
-        private void checkGigante_Checked(object sender, RoutedEventArgs e)
-        {
-            qtdMaxPizza = 4;
-            checkBroto.IsEnabled = false;
-            checkMedia.IsEnabled = false;
-            checkGrande.IsEnabled = false;
-            TamPizza = "Média";
-        }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (PossuiPizzasCadastradas)
+            MainWindow tela = new MainWindow();
+            if (MessageBox.Show("Deseja cancelar pedido ?", "Cancelar pedido", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                MainWindow tela = new MainWindow();
-                if (MessageBox.Show("Deseja cancelar pedido ?", "Cancelar pedido", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    //ClientesPizzasController.ExcluirPedidosCliente(clientePedido.ClienteID);
-                }
+                tela.Show();
             }
-        }
-
-        private void checkBroto_Unchecked(object sender, RoutedEventArgs e)
-        {
-            qtdMaxPizza = 0;
-            checkMedia.IsEnabled = true;
-            checkGigante.IsEnabled = true;
-            checkGrande.IsEnabled = true;
-            TamPizza = null;
-        }
-
-        private void checkMedia_Unchecked(object sender, RoutedEventArgs e)
-        {
-            qtdMaxPizza = 0;
-            checkBroto.IsEnabled = true;
-            checkGigante.IsEnabled = true;
-            checkGrande.IsEnabled = true;
-            TamPizza = null;
-        }
-
-        private void checkGrande_Unchecked(object sender, RoutedEventArgs e)
-        {
-            qtdMaxPizza = 0;
-            checkBroto.IsEnabled = true;
-            checkMedia.IsEnabled = true;
-            checkGigante.IsEnabled = true;
-            TamPizza = null;
-        }
-
-        private void checkGigante_Unchecked(object sender, RoutedEventArgs e)
-        {
-            qtdMaxPizza = 0;
-            checkBroto.IsEnabled = true;
-            checkMedia.IsEnabled = true;
-            checkGrande.IsEnabled = true;
-            TamPizza = null;
         }
     }
 }

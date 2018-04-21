@@ -23,7 +23,7 @@ namespace WpfView
             EnviarClienteEditado(txtNome.Text, txtCPF.Text, txtTelefone.Text);
             MessageBox.Show("Cliente editado");
             FazerPedido pedido = new FazerPedido();
-            pedido.MostrarCliente(cliEdicao.ClienteID);
+            pedido.MostrarCliente(cliEdicao);
             this.Close();
             pedido.ShowDialog();
         }
