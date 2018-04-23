@@ -1,10 +1,12 @@
 ﻿using Controllers;
 using Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace WpfView
 {
@@ -18,7 +20,7 @@ namespace WpfView
         public ProcurarCliente()
         {
             InitializeComponent();
-            CarregarGrid();
+            Loaded += async (d, e) => await CarregarGrid().ConfigureAwait(false);
         }
 
         private void ProcuraID(object sender, RoutedEventArgs e)
@@ -30,8 +32,8 @@ namespace WpfView
 
         private async Task CarregarGrid()
         {
-            var clientList = await ClienteController.ListarTodosClientes();
-            gridCliente.ItemsSource = new ObservableCollection<Cliente>(clientList);
+            var clientList = await ClienteController.ListarTodosClientes().ConfigureAwait(false);
+            await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => gridCliente.ItemsSource = new ObservableCollection<Cliente>(clientList)));
         }
 
         private void btnVoltar_Click(object sender, RoutedEventArgs e)

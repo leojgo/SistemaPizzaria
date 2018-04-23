@@ -53,6 +53,7 @@
     <Compile Include="ClienteController.cs" />
     <Compile Include="ClientesBebidasController.cs" />
     <Compile Include="ClientesPizzasController.cs" />
+    <Compile Include="CollectionExtensions.cs" />
     <Compile Include="ContextoSingleton.cs" />
     <Compile Include="PedidoController.cs" />
     <Compile Include="PizzaController.cs" />

@@ -39,10 +39,10 @@ namespace WpfView
             clientePedido = cliente;
         }
 
-        private void MostrarGrid()
+        private async void MostrarGrid()
         {
             gridPizzasEscolhidas.ItemsSource = _pizzasEscolhidas;
-            _pizzas = new ObservableCollection<Pizza>(PizzaController.ListarTodasPizzas());
+            _pizzas = new ObservableCollection<Pizza>(await PizzaController.ListarTodasPizzas());
             gridPizza.ItemsSource = _pizzas;
         }
 

@@ -2,8 +2,10 @@
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace WpfView
 {
@@ -17,14 +19,15 @@ namespace WpfView
             InitializeComponent();
         }
 
-        private void btnListarPizzas_Click(object sender, RoutedEventArgs e)
+        private async void btnListarPizzas_Click(object sender, RoutedEventArgs e)
         {
-            List<Pizza> list = PizzaController.ListarTodasPizzas();
-            if (list != null)
-            {
-                gridPizza.ItemsSource = list;
-            }
-            else
+            await Dispatcher.Invoke(async () => await CarregaGrid());
+        }
+
+        private async Task CarregaGrid()
+        {
+            gridPizza.ItemsSource = await PizzaController.ListarTodasPizzas();
+            if (gridPizza.Items.Count == 0)
             {
                 MessageBox.Show("A tabela não possui nada cadastrado");
             }

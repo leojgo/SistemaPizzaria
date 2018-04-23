@@ -1,24 +1,52 @@
 ﻿using Models;
+using Sistema.Models.DAL;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Controllers
 {
-    public class PizzaController
+    public static class PizzaController
     {
         // INSERT
-        public static void SalvarPizza(Pizza pizza)
+        public async static void SalvarPizza(Pizza pizza)
         {
-            ContextoSingleton.Instancia.Pizza.Add(pizza);
-            ContextoSingleton.Instancia.SaveChanges();
+            using (var db = new MeuContexto())
+            {
+                db.Pizza.Add(pizza);
+                await db.SaveChangesAsync();
+            }
         }
 
-        public static List<Pizza> ListarTodasPizzas()
+        public static Task<List<Pizza>> ListarTodasPizzas()
         {
-            return ContextoSingleton.Instancia.Pizza.ToList();
+            return new MeuContexto().Pizza.ToListAsync();
+        }
+
+        public static IQueryable<Pizza> GetAll()
+        {
+            return new MeuContexto().Set<Pizza>();
+        }
+
+        public static IQueryable<Pizza> GetAllIncluding(params Expression<Func<Pizza, object>>[] propertySelectors)
+        {
+            if (propertySelectors.IsNullOrEmpty())
+            {
+                return GetAll();
+            }
+
+            var query = GetAll();
+
+            foreach (var propertySelector in propertySelectors)
+            {
+                query = query.Include(propertySelector);
+            }
+
+            return query;
         }
 
         public static void EditarPizza(int id, Pizza novaPizza)
