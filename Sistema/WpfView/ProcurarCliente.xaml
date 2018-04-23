@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfView"
         mc:Ignorable="d"
-        Title="ProcurarCliente" Style="{StaticResource estiloJanela}">
+        Title="ProcurarCliente" Style="{StaticResource estiloJanela}"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Canvas HorizontalAlignment="Left" Height="380" Margin="10,10,0,0" VerticalAlignment="Top" Width="650">
             <TextBlock Text="Telefone" Width="93" FontSize="22" FontFamily="Arial" Canvas.Top="13" Canvas.Left="10"/>

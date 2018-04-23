@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfView"
         mc:Ignorable="d"
-        Title="CadastroPizzas" Style="{StaticResource estiloJanela}">
+        Title="CadastroPizzas" Style="{StaticResource estiloJanela}"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Cadastro de Pizzas" HorizontalAlignment="Left" Margin="223,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.418,0.13" Width="402" FontFamily="Arial Black" FontSize="24"/>
         <Button x:Name="btnSalvarPizza" Content="Salvar" HorizontalAlignment="Left" Margin="351,108,0,0" VerticalAlignment="Top" Width="90" FontFamily="Arial Black" FontSize="18" Click="btnSalvarPizza_Click" RenderTransformOrigin="0.075,0.443" Height="26"/>

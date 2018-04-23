@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfView"
         mc:Ignorable="d"
-        Title="CadastrarCliente" Style="{StaticResource estiloJanela}">
+        Title="CadastrarCliente" Style="{StaticResource estiloJanela}"
+        WindowStartupLocation="CenterScreen">
 
     <Grid Margin="0,0,2,3" RenderTransformOrigin="0.508,0.567">
 
