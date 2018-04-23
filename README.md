@@ -7,10 +7,10 @@ Esse projeto aborda um sistema desktop para as pizzarias que utilizam o sistema 
 - Cadastrar novos clientes;
 - Editar clientes;
 - Excluir clientes (nível de permissão somente do administrador);
-- Procurar clientes por ID e por telefone;
+- Procurar clientes por nome e por telefone;
 - Listagem de todos os clientes;
 - Listagem de todos os pedidos;
-- Filtro da situação dos pedidos(Produção, Entrega e Entreguegado);
+- Filtro da situação dos pedidos(Produção, Em rota e Entregue);
 - Informar os entregadores nos pedidos;
 - Cadastrar, editar, excluir pizzas e bebidas;
 
