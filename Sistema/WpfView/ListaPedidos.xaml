@@ -11,9 +11,7 @@
         <DataGrid x:Name="gridPedidos"  IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="false" Margin="68,83,53,67" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Número do Pedido" Binding="{Binding Path=PedidoID}"/>
-                <DataGridTextColumn Header="Pizzas escolhidas" Binding="{Binding Path=Pizza.Nome}"/>
                 <DataGridTextColumn Header="Status" Binding="{Binding Path=Status}"/>
-                <DataGridTextColumn Header="Tamanho da Pizza" Binding="{Binding Path='Media'}"/>
                 <DataGridTextColumn Header="Valor Total" Binding="{Binding Path=ValorTotal}"/>
             </DataGrid.Columns>
         </DataGrid>
