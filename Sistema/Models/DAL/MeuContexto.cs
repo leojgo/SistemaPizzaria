@@ -22,6 +22,10 @@ namespace Sistema.Models.DAL
 
         public DbSet<Bebida> Bebida { get; set; }
 
+        public DbSet<PedidoPizza> PedidoPizza { get; set; }
+
+        public DbSet<PedidoBebida> PedidoBebida { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
@@ -34,6 +38,8 @@ namespace Sistema.Models.DAL
             modelBuilder.Configurations.Add(new EnderecoConfiguration());
             modelBuilder.Configurations.Add(new PizzaConfiguration());
             modelBuilder.Configurations.Add(new PedidoConfiguration());
+            modelBuilder.Configurations.Add(new PedidoPizzaConfiguration());
+            modelBuilder.Configurations.Add(new PedidoBebidaConfiguration());
         }
     }
 }

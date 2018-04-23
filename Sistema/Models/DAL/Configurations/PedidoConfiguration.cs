@@ -8,8 +8,9 @@ namespace Models.DAL.Configurations
         {
             HasKey(p => p.PedidoID);
 
-            Property(p => p.ClientID)
-                .IsRequired();
+            HasRequired(p => p.Cliente)
+                .WithMany(p => p.Pedidos)
+                .HasForeignKey(p => p.ClienteID);
 
             Property(p => p.Data)
                 .IsRequired();
@@ -19,9 +20,11 @@ namespace Models.DAL.Configurations
             Property(p => p.ValorTotal)
                 .IsRequired();
 
-            HasRequired<Pizza>(p => p.Pizza);
+            HasMany(p => p.Pizzas)
+                .WithRequired().HasForeignKey(p => p.PizzaID);
 
-            HasOptional<Bebida>(p => p.Bebida);
+            HasMany(p => p.Bebidas)
+                .WithRequired().HasForeignKey(p => p.BebidaID);
         }
     }
 }

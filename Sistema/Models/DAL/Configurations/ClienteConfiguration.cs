@@ -19,6 +19,10 @@ namespace Models.DAL.Configurations
 
             HasRequired(e => e.Endereco)
                 .WithRequiredPrincipal(c => c.Cliente);
+
+            HasMany(p => p.Pedidos)
+                .WithRequired()
+                .HasForeignKey(p => p.ClienteID);
         }
     }
 }

@@ -92,10 +92,10 @@ namespace Models.DAL.Migrations
             var pedido = new Pedido
             {
                 PedidoID = 1,
-                ClientID = 1,
+                ClienteID = 1,
                 Data = DateTime.Now,
-                Pizza = pizzas.Find(x => x.PizzaID == 1),
-                Bebida = bebidas.Find(x => x.BebidaID == 2),
+                Pizzas = new List<PedidoPizza>() { new PedidoPizza { Pizza = pizzas.Find(x => x.PizzaID == 1), Quantidade = 1, Tamanho = TamanhoPizzaEnum.Media } },
+                Bebidas = new List<PedidoBebida>() { new PedidoBebida { Bebida = bebidas.Find(x => x.BebidaID == 2), Quantidade = 1 } },
                 ValorTotal = 45,
                 Status = "EM PRODUÇÃO"
             };
