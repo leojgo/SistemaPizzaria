@@ -29,7 +29,7 @@ namespace WpfView
                     try
                     {
                         Pedido pedido = ((Pedido)gridPedidos.SelectedItem);
-                        PedidoController.MudarStatus(pedido, "SAIU PARA ENTREGA");
+                        PedidoController.MudarStatus(pedido, StatusPedidoEnum.Saiu_Para_Entrega);
                         gridPedidos.ItemsSource = PedidoController.ProcuraPedidoPendentes();
                         MessageBox.Show("Pedido mudado para Saiu Para Entrega com sucesso");
                     }
@@ -47,7 +47,7 @@ namespace WpfView
                     try
                     {
                         Pedido ped = ((Pedido)gridPedidos.SelectedItem);
-                        PedidoController.MudarStatus(ped, "FINALIZADO");
+                        PedidoController.MudarStatus(ped, StatusPedidoEnum.Finalizado);
                         gridPedidos.ItemsSource = PedidoController.ProcuraPedidoSaiuParaEntrega();
                         MessageBox.Show("Pedido mudado para finalizado com sucesso");
                     }

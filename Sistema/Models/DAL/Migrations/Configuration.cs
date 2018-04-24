@@ -97,7 +97,7 @@ namespace Models.DAL.Migrations
                 Pizzas = new List<PedidoPizza>() { new PedidoPizza { Pizza = pizzas.Find(x => x.PizzaID == 1), Quantidade = 1, Tamanho = TamanhoPizzaEnum.Media } },
                 Bebidas = new List<PedidoBebida>() { new PedidoBebida { Bebida = bebidas.Find(x => x.BebidaID == 2), Quantidade = 1 } },
                 ValorTotal = 45,
-                Status = "EM PRODUÇÃO"
+                Status = StatusPedidoEnum.Em_Producao
             };
             context.Pedido.AddOrUpdate(pedido);
             context.SaveChanges();

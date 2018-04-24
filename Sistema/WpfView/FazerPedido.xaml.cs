@@ -4,7 +4,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace WpfView
 {
@@ -17,19 +16,24 @@ namespace WpfView
         private Cliente clientePedido;
         private ObservableCollection<Pizza> _pizzasEscolhidas;
         private ObservableCollection<Pizza> _pizzas;
+        private ObservableCollection<PedidoPizza> _pedidoPizzas;
 
         public FazerPedido()
         {
             InitializeComponent();
             _pizzasEscolhidas = new ObservableCollection<Pizza>();
+            _pedidoPizzas = new ObservableCollection<PedidoPizza>();
             MostrarGrid();
         }
 
         private void btnCancelar_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow w = new MainWindow();
-            this.Close();
-            w.ShowDialog();
+            MainWindow tela = new MainWindow();
+            if (MessageBox.Show("Deseja cancelar pedido ?", "Cancelar pedido", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                tela.Show();
+                this.Close();
+            }
         }
 
         public void MostrarCliente(Cliente cliente)
@@ -37,6 +41,20 @@ namespace WpfView
             blockCliente.Text = cliente.Nome;
             blockTelefone.Text = cliente.Telefone;
             clientePedido = cliente;
+        }
+
+        private void AdicionarPizza(Pizza pizza)
+        {
+            if (_pedidoPizzas.Count > 0)
+            {
+                var existe = (from p in _pedidoPizzas where p.PizzaID == pizza.PizzaID select p).SingleOrDefault();
+                if (existe != null)
+                {
+                    existe.Quantidade++;
+                    return;
+                }
+            }
+            _pedidoPizzas.Add(new PedidoPizza { PizzaID = pizza.PizzaID, Quantidade = 1, Tamanho = TamanhoPizzaEnum.Media });
         }
 
         private async void MostrarGrid()
@@ -64,58 +82,30 @@ namespace WpfView
             blockValorTotal.Text = Convert.ToString(valorTotal);
         }
 
-        private void SalvandoTabelaEscolhidos()
+        private void SalvarPedido()
         {
-            Pizza pizzaEscolhida = ((Pizza)gridPizza.SelectedItem);
-            SalvarPedido(pizzaEscolhida);
-            valorTotal += ((Pizza)gridPizza.SelectedItem).Preco;
-            blockValorTotal.Text = Convert.ToString(valorTotal);
+            _pizzasEscolhidas.ToList().ForEach(AdicionarPizza);
+            var pedido = new Pedido
+            {
+                ClienteID = clientePedido.ClienteID,
+                Pizzas = _pedidoPizzas,
+                Status = StatusPedidoEnum.Em_Producao,
+                ValorTotal = valorTotal,
+                Data = DateTime.Now
+            };
+            PedidoController.SalvarPedido(pedido);
         }
 
         private void btnConfirmar_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Confirmar pedido ?", "Confirma Pedido", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                SalvandoNaTabelaPedidos();
+                SalvarPedido();
                 MessageBox.Show("Pedido finalizado");
                 MainWindow tela = new MainWindow();
                 this.Close();
                 tela.ShowDialog();
             }
-        }
-
-        private void SalvarPedido(Pizza pizza)
-        {
-            /*ClientesPizzas novo = new ClientesPizzas();
-            novo.ClienteID = clientePedido.ClienteID;
-            novo.PizzaID = pizza.PizzaID;
-            novo.Preco = pizza.Preco;
-            DateTime data = DateTime.Now;
-            novo.Data = data;
-            ClientesPizzasController.SalvarItem(novo);
-            MostrarGridPizzasEscolhidas();*/
-        }
-
-        private void MostrarGridPizzasEscolhidas()
-        {
-            //List<ClientesPizzas> list = ClientesPizzasController.PesquisarClientePedidos(clientePedido.ClienteID);
-            //gridPizzasEscolhidas.ItemsSource = list;
-        }
-
-        private void SalvandoNaTabelaPedidos()
-        {
-            //List<ClientesPizzas>list=ClientesPizzasController.PesquisarClientePedidos(clientePedido.ClienteID);
-            Pedido novoPed = new Pedido();
-
-            /* foreach (var item in list)
-             {
-                 novoPed.Status = "EM PRODUÇÃO";
-                 novoPed.ClientesProdutosEscolhidosID = item.ClientesPizzasID;
-                 novoPed.NumPedido = numPedido;
-                 novoPed.ValorTotal = double.Parse(blockValorTotal.Text);
-                 novoPed.Tamanho_Pizza = TamPizza;
-                 PedidoController.SalvarPedido(novoPed);
-             }*/
         }
 
         private void Bebidas_Click(object sender, RoutedEventArgs e)
@@ -124,40 +114,6 @@ namespace WpfView
             bebidas.MostrarClienteParteBebidas(clientePedido, valorTotal);
             this.Close();
             bebidas.ShowDialog();
-        }
-
-        private void gridPizzasEscolhidas_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (gridPizzasEscolhidas.SelectedItem != null)
-            {
-                /*MessageBoxResult result = MessageBox.Show("Confirma a exclusão do item " + ((ClientesPizzas)gridPizzasEscolhidas.SelectedItem).ClientesPizzasID + " ?", "Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        //int id = ((ClientesPizzas)gridPizzasEscolhidas.SelectedItem).ClientesPizzasID;
-                        //ClientesPizzasController.ExcluirSelecao(id);
-                        MessageBox.Show("Item excluído com sucesso");
-                        //valorTotal -= ((ClientesPizzas)gridPizzasEscolhidas.SelectedItem).Preco;
-                        blockValorTotal.Text = Convert.ToString(valorTotal);
-                        MostrarGrid();
-                        MostrarGridPizzasEscolhidas();
-                    }
-                    catch (Exception erro)
-                    {
-                        MessageBox.Show("ERRO: " + erro);
-                    }
-                }*/
-            }
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            MainWindow tela = new MainWindow();
-            if (MessageBox.Show("Deseja cancelar pedido ?", "Cancelar pedido", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                tela.Show();
-            }
         }
     }
 }

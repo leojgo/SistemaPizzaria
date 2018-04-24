@@ -13,6 +13,7 @@ namespace Models.DAL.Configurations
             HasKey(p => p.PizzaID);
 
             Property(p => p.Nome)
+                .IsRequired()
                 .HasMaxLength(70)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Nome") { IsUnique = true }));
 

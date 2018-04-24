@@ -1,4 +1,5 @@
 ﻿using Models;
+using Sistema.Models.DAL;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -8,13 +9,16 @@ namespace Controllers
     public class PedidoController
     {
         // INSERT
-        public static void SalvarPedido(Pedido novo)
+        public static void SalvarPedido(Pedido pedido)
         {
-            ContextoSingleton.Instancia.Pedido.Add(novo);
-            ContextoSingleton.Instancia.SaveChanges();
+            using (var db = new MeuContexto())
+            {
+                db.Pedido.Add(pedido);
+                db.SaveChanges();
+            }
         }
 
-        public static void MudarStatus(Pedido pedidoAntigo, string status)
+        public static void MudarStatus(Pedido pedidoAntigo, StatusPedidoEnum status)
         {
             Pedido pedidoEdit = PesquisarPorID(pedidoAntigo.PedidoID);
 
@@ -35,21 +39,21 @@ namespace Controllers
         public static List<Pedido> ProcuraPedidoSaiuParaEntrega()
         {
             return (from x in ContextoSingleton.Instancia.Pedido
-                    where x.Status.Contains("SAIU PARA ENTREGA")
+                    where x.Status == StatusPedidoEnum.Saiu_Para_Entrega
                     select x).ToList();
         }
 
         public static List<Pedido> ProcuraPedidoPendentes()
         {
             return (from x in ContextoSingleton.Instancia.Pedido
-                    where x.Status.Contains("EM PRODUÇÃO")
+                    where x.Status == StatusPedidoEnum.Em_Producao
                     select x).ToList();
         }
 
         public static List<Pedido> ProcuraPedidoFinalizado()
         {
             return (from x in ContextoSingleton.Instancia.Pedido
-                    where x.Status.Contains("FINALIZADO")
+                    where x.Status == StatusPedidoEnum.Finalizado
                     select x).ToList();
         }
 

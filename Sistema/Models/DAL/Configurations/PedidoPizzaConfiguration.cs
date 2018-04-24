@@ -18,7 +18,9 @@ namespace Models.DAL.Configurations
                 .WithMany(p => p.Pizzas)
                 .HasForeignKey(pt => pt.PedidoID);
 
-            HasRequired(pt => pt.Pizza);
+            HasRequired(pt => pt.Pizza)
+                .WithMany(pt=>pt.PedidoPizzas)
+                .HasForeignKey(pt=>pt.PizzaID);
         }
     }
 }
