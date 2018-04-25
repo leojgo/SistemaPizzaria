@@ -17,10 +17,12 @@ namespace WpfView
         private ObservableCollection<Pizza> _pizzasEscolhidas;
         private ObservableCollection<Pizza> _pizzas;
         private ObservableCollection<PedidoPizza> _pedidoPizzas;
+        public TamanhoPizzaEnum TamanhoPizza { get; set; }
 
         public FazerPedido()
         {
             InitializeComponent();
+            rbtMedia.IsChecked = true;
             _pizzasEscolhidas = new ObservableCollection<Pizza>();
             _pedidoPizzas = new ObservableCollection<PedidoPizza>();
             MostrarGrid();
@@ -54,7 +56,22 @@ namespace WpfView
                     return;
                 }
             }
-            _pedidoPizzas.Add(new PedidoPizza { PizzaID = pizza.PizzaID, Quantidade = 1, Tamanho = TamanhoPizzaEnum.Media });
+            _pedidoPizzas.Add(new PedidoPizza { PizzaID = pizza.PizzaID, Quantidade = 1, Tamanho = TamanhoPizza });
+        }
+
+        private void RemoverPizza(Pizza pizza)
+        {
+            PedidoPizza existe = null;
+            if (_pedidoPizzas.Count > 0)
+            {
+                existe = (from p in _pedidoPizzas where p.PizzaID == pizza.PizzaID select p).SingleOrDefault();
+                if (existe.Quantidade > 1)
+                {
+                    existe.Quantidade--;
+                    return;
+                }
+            }
+            _pedidoPizzas.Remove(existe);
         }
 
         private async void MostrarGrid()
@@ -67,6 +84,7 @@ namespace WpfView
         private void gridPizza_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             _pizzasEscolhidas.Add(gridPizza.SelectedItem as Pizza);
+            AdicionarPizza(gridPizza.SelectedItem as Pizza);
             AtualizarTotal();
         }
 
@@ -84,7 +102,6 @@ namespace WpfView
 
         private void SalvarPedido()
         {
-            _pizzasEscolhidas.ToList().ForEach(AdicionarPizza);
             var pedido = new Pedido
             {
                 ClienteID = clientePedido.ClienteID,
@@ -101,7 +118,6 @@ namespace WpfView
             if (MessageBox.Show("Confirmar pedido ?", "Confirma Pedido", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 SalvarPedido();
-                MessageBox.Show("Pedido finalizado");
                 MainWindow tela = new MainWindow();
                 this.Close();
                 tela.ShowDialog();
